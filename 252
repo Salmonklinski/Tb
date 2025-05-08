@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Limbo x86 Emulator</title>
+    <style>
+        .emulator-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            border: 2px solid #333;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .emulator-header {
+            background: #333;
+            color: white;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-between;
+        }
+        .emulator-screen {
+            background: black;
+            height: 400px;
+            color: #00ff00;
+            font-family: monospace;
+            padding: 10px;
+            overflow-y: scroll;
+        }
+        .emulator-controls {
+            background: #eee;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .power-button {
+            background: #ff4444;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="emulator-container">
+        <div class="emulator-header">
+            <span>Limbo x86 Emulator</span>
+            <span>Android x86 9.0</span>
+        </div>
+        <div class="emulator-screen" id="emulator-screen">
+            Limbo PC Emulator (QEMU 5.1.0)<br>
+            ---------------------------------<br>
+            > Initializing virtual hardware...<br>
+            > CPU: 2 cores (x86_64)<br>
+            > RAM: 2048MB allocated<br>
+            > Storage: 8GB virtual HDD<br>
+            > Starting Android x86...<br>
+            > Loading kernel...<br>
+            > [    0.000000] Linux version 4.19.15<br>
+            > [    0.100000] Command line: root=/dev/ram0<br>
+            > [    0.500000] Android init started...<br>
+            > [    2.000000] Starting Android services...<br>
+            > [    5.000000] System boot completed<br>
+            > <br>
+            > Android x86 successfully started!<br>
+            > <br>
+            > To interact with this emulator, use the controls below.<br>
+        </div>
+        <div class="emulator-controls">
+            <button class="power-button" onclick="powerOff()">Power Off</button>
+            <button onclick="startAndroid()">Start Android</button>
+            <button onclick="sendCommand('help')">Help</button>
+            <button onclick="sendCommand('status')">Status</button>
+        </div>
+    </div>
+
+    <script>
+        function appendToScreen(text) {
+            const screen = document.getElementById('emulator-screen');
+            screen.innerHTML += text + '<br>';
+            screen.scrollTop = screen.scrollHeight;
+        }
+
+        function powerOff() {
+            appendToScreen('> Initiating shutdown sequence...');
+            appendToScreen('> Saving VM state...');
+            appendToScreen('> Powering off virtual machine...');
+            setTimeout(() => {
+                document.getElementById('emulator-screen').innerHTML = 
+                    'Limbo PC Emulator (QEMU 5.1.0)<br>---------------------------------<br>> Virtual machine is powered off.<br>> Click "Start Android" to boot.';
+            }, 1000);
+        }
+
+        function startAndroid() {
+            document.getElementById('emulator-screen').innerHTML = 
+                'Limbo PC Emulator (QEMU 5.1.0)<br>---------------------------------<br>> Booting Android x86...';
+            setTimeout(() => {
+                appendToScreen('> Initializing virtual hardware...');
+                setTimeout(() => appendToScreen('> CPU: 2 cores (x86_64)'), 300);
+                setTimeout(() => appendToScreen('> RAM: 2048MB allocated'), 600);
+                setTimeout(() => appendToScreen('> Storage: 8GB virtual HDD'), 900);
+                setTimeout(() => appendToScreen('> Starting Android x86...'), 1200);
+                setTimeout(() => appendToScreen('> Loading kernel...'), 1500);
+                setTimeout(() => appendToScreen('> [    0.000000] Linux version 4.19.15'), 1800);
+                setTimeout(() => appendToScreen('> [    0.100000] Command line: root=/dev/ram0'), 2100);
+                setTimeout(() => appendToScreen('> [    0.500000] Android init started...'), 2400);
+                setTimeout(() => appendToScreen('> [    2.000000] Starting Android services...'), 2700);
+                setTimeout(() => appendToScreen('> [    5.000000] System boot completed'), 3000);
+                setTimeout(() => appendToScreen('> Android x86 successfully started!'), 3300);
+            }, 500);
+        }
+
+        function sendCommand(cmd) {
+            appendToScreen('> Command: ' + cmd);
+            if (cmd === 'help') {
+                appendToScreen('Available commands:');
+                appendToScreen('start - Start Android');
+                appendToScreen('stop - Stop emulator');
+                appendToScreen('status - Show VM status');
+                appendToScreen('help - Show this help');
+            } else if (cmd === 'status') {
+                appendToScreen('VM Status:');
+                appendToScreen('CPU: 2 cores (x86_64)');
+                appendToScreen('RAM: 2048MB/2048MB');
+                appendToScreen('Storage: 8GB HDD');
+                appendToScreen('Network: NAT');
+            }
+        }
+    </script>
+</body>
+</html>
